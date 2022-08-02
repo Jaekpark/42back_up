@@ -1,0 +1,155 @@
+version: "3"
+
+services:
+  nginx:
+    depends_on:
+        - wordpress
+    build:
+      context: ./requirements/nginx
+    image: nginx:${TAG}
+    container_name: nginx
+    ports:
+        - "443:443"
+    restart: always
+    volumes:
+        - wp_volume:/var/www/wordpress
+        - ssl_volume:/ssl/jaekpark
+    networks:
+        - inception_network
+        
+  wordpress:
+    depends_on:
+        - mariadb
+    build:
+      context: ./requirements/wordpress
+    image: wordpress:${TAG}
+    container_name: wordpress
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASS}
+      WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
+      WORDPRESS_DOMAIN: ${DOMAIN_NAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+    expose:
+        - "9000"
+    restart: always
+    volumes:
+        - wp_volume:/var/www/wordpress
+    networks:
+        - inception_network
+
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    image: mariadb:${TAG}
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ADMIN: ${MYSQL_ADMIN}
+      MYSQL_ADMIN_PASSWORD: ${MYSQL_ADMIN_PASSWORD}
+    expose:
+        - "3306"
+    restart: always
+    volumes:
+        - db_volume:/var/lib/mysql
+    networks:
+        - inception_network
+
+##### BONUS #####
+  ftp:
+    build:
+      context: ./requirements/bonus/ftp
+    image: ftp:${TAG}
+    container_name: ftp
+    ports:
+      - "21:21"
+    restart: always
+    volumes:
+      - ssl_volume:/ssl/jaekpark
+      - wp_volume:/home/jaekpark/wordpress
+      - blog_volume:/home/jaekpark/blog
+    environment:
+      KEY_PATH: ${KEY_PATH}
+      CRT_PATH: ${CRT_PATH}
+      FTP_USER: ${FTP_USER}
+      FTP_PASSWORD: ${FTP_PASSWORD}
+    networks:
+      - inception_network
+
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+    image: redis:${TAG}
+    container_name: redis
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - inception_network
+  
+  blog:
+    build:
+      context: ./requirements/bonus/blog
+    image: blog:${TAG}
+    container_name: blog
+    expose:
+      - "3000"
+    volumes:
+      - blog_volume:/usr/app
+    restart: always
+    networks:
+      - inception_network
+
+  adminer:
+    depends_on:
+      - mariadb
+    build:
+      context: ./requirements/bonus/adminer
+    image: adminer:${TAG}
+    container_name: adminer
+    environment:
+      KEY_PATH: ${KEY_PATH}
+      CRT_PATH: ${CRT_PATH}
+    expose:
+      - "8080"
+    volumes:
+      - ssl_volume:/ssl/jaekpark
+    restart: always
+    networks:
+      - inception_network
+
+################
+networks:
+  inception_network:
+volumes:
+  wp_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${WP_VOLUME_PATH}
+      o: bind
+  db_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DB_VOLUME_PATH}
+      o: bind
+  ssl_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/jaekpark/data/ssl
+      o: bind
+  blog_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/jaekpark/data/blog
+      o: bind

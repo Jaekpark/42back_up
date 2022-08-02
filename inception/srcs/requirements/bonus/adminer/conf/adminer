@@ -1,0 +1,13 @@
+server {
+    listen 8080;
+
+	server_name jaekpark.42.fr;
+
+    root /var/www/adminer;
+    index index.php index.html;
+
+    location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+	    fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+	}
+}
