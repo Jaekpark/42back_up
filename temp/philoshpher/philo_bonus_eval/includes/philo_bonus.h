@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaekpark <jaekpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaekpark <jaekpark@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 11:37:58 by jaekpark          #+#    #+#             */
-/*   Updated: 2022/08/04 15:03:37 by jaekpark         ###   ########.fr       */
+/*   Updated: 2022/08/05 09:51:52 by jaekpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -19,6 +19,7 @@
 # include <sys/time.h>
 # include <signal.h>
 # include <semaphore.h>
+# include <memory.h>
 
 # define MILLI_SEC 1000
 
@@ -46,8 +47,17 @@ typedef struct s_time
 	long long	sleep;
 }	t_time;
 
+typedef struct s_philosopher
+{
+	pid_t		pid;
+	pthread_t	mo;
+	int			ate_count;
+	long long	last_ate;
+}	t_philo;
+
 typedef struct s_configure
 {
+	int				id;
 	int				philo_cnt;
 	int				must_eat;
 	long long		start_time;
@@ -55,47 +65,39 @@ typedef struct s_configure
 	sem_t			*forks;
 	sem_t			*console;
 	sem_t			*full;
-	sem_t			*die;
+	sem_t			*stop;
 	t_time			time;
-	t_philo			philo;
+	t_philo			*philo;
 }	t_config;
 
-typedef struct s_philosopher
-{
-	int			id;
-	pid_t		pid;
-	int			ate_count;
-	long long	last_ate;
-	t_state		status;
-}	t_philo;
-
 void		init_config(t_config *config);
-int			init_philo(t_philo *philos, t_config *config);
-int			init_mutex(t_config *config);
 int			set_time(t_time *time, char **argv);
-t_config	*set_config(int argc, char **argv);
-t_philo		*set_philo(t_config *config);
+int			set_config(int argc, char **argv, t_config *config);
+int			set_philo(t_config *config);
 long long	get_time(void);
-void		eating_time(t_philo *philo);
-void		sleeping_time(t_philo *philo);
-void		philo_eat(t_philo *philo);
-void		philo_sleep(t_philo *philo);
-void		philo_think(t_philo *philo);
-void		philo_die(t_philo *philo);
-void		console_philo(t_philo *philo, char *status);
-void		console_log(t_philo *philo, char *status);
-void		console_die(t_philo *philo);
+void		eating_time(t_config *config);
+void		sleeping_time(t_config *config);
+void		*check_death(void *arg);
+void		init_semaphore(t_config *config);
+void		philo_eat(t_config *config);
+void		philo_sleep(t_config *config);
+void		philo_think(t_config *config);
+void		console_log(t_config *config, char *status, int post);
+void		console_die(t_config *config);
 int			console_error(char *err);
-void		*routine(void *data);
-void		*monitor(void *data);
+void		routine(t_config *config);
+void		*monitor(void *arg);
 int			check_arg(int argc, char **argv);
-int			check_philo(t_philo *philos);
+int			check_philo(t_config *conf);
 int			ft_strlen(char *str);
 int			ft_isdigit(char c);
 int			ft_strdigit(char *str);
 void		ft_putstr_fd(int fd, char *str);
 long long	ft_atoll(const char *str);
-int			terminate_simulation(t_philo *philos);
-int			join_all_thread(t_philo *philos);
+void		timer(long long start, long long end);
+void		console_full(t_config *config);
+void		pickup_fork(t_config *config);
+void		put_down_fork(t_config *config);
+void		*check_full(void *arg);
 
 #endif

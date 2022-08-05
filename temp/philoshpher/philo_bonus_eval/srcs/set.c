@@ -6,11 +6,11 @@
 /*   By: jaekpark <jaekpark@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 19:08:43 by jaekpark          #+#    #+#             */
-/*   Updated: 2022/03/25 02:43:20 by jaekpark         ###   ########.fr       */
+/*   Updated: 2022/08/05 09:27:52 by jaekpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 int	set_time(t_time *time, char **argv)
 {
@@ -22,32 +22,32 @@ int	set_time(t_time *time, char **argv)
 	return (0);
 }
 
-t_config	*set_config(int argc, char **argv)
+int	set_config(int argc, char **argv, t_config *config)
 {
-	t_config	*config;
-
-	config = malloc(sizeof(t_config));
 	if (!argv)
-		return (NULL);
+		return (FALSE);
 	init_config(config);
 	config->philo_cnt = ft_atoll(argv[1]);
-	config->forks = malloc(sizeof(pthread_mutex_t) * (config->philo_cnt));
 	set_time(&(config->time), argv);
-	init_mutex(config);
 	if (argc == 6)
 		config->must_eat = ft_atoll(argv[5]);
-	return (config);
+	init_semaphore(config);
+	return (TRUE);
 }
 
-t_philo	*set_philo(t_config *config)
+int	set_philo(t_config *config)
 {
-	int		i;
-	t_philo	*philos;
+	int	i;
 
-	if (!config)
-		return (NULL);
 	i = -1;
-	philos = malloc(sizeof(t_philo) * (config->philo_cnt));
-	init_philo(philos, config);
-	return (philos);
+	config->philo = malloc(sizeof(t_philo) * config->philo_cnt);
+	if (!config || !config->philo)
+		return (FALSE);
+	while (++i < config->philo_cnt)
+	{
+		config->philo[config->id].pid = 0;
+		config->philo[config->id].ate_count = 0;
+		config->philo[config->id].last_ate = 0;
+	}
+	return (TRUE);
 }

@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jaekpark <jaekpark@student.42.fr>          +#+  +:+       +#+         #
+#    By: jaekpark <jaekpark@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 15:11:21 by jaekpark          #+#    #+#              #
-#    Updated: 2022/03/28 16:00:58 by jaekpark         ###   ########.fr        #
+#    Updated: 2022/08/05 09:41:51 by jaekpark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-INCS				=	philo.h
-SRCS				=	philo.c time.c set.c init.c action.c console.c thread.c utils.c check.c
+INCS				=	philo_bonus.h
+SRCS				=	philo_bonus.c time.c set.c init.c utils.c check.c action.c console.c thread.c
 OBJS				= 	$(patsubst %.c, %.o, $(SRCS_FILE))
 SRCS_DIR			=	./srcs/
 OBJS_DIR			=	./objs/
@@ -27,8 +27,8 @@ RM					=	rm -rf
 CFLAGS				=	-Wall -Wextra -Werror
 DFLAGS				= 	-Wall -Wextra -Werror -g -fsanitize=address
 HEADER_FLAG			=	-I$(INCS_DIR) -lpthread
-NAME				=	philo
-DEBUG				=	philo_debug
+NAME				=	philo_bonus
+DEBUG				=	philo_bonus_debug
 
 #	Color settings
 BLACK			=	"\033[1;30m"

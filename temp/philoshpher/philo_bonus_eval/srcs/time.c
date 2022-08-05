@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaekpark <jaekpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaekpark <jaekpark@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 19:08:49 by jaekpark          #+#    #+#             */
-/*   Updated: 2022/03/28 15:58:40 by jaekpark         ###   ########.fr       */
+/*   Updated: 2022/08/05 09:28:00 by jaekpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 long long	get_time(void)
 {
@@ -22,7 +22,7 @@ long long	get_time(void)
 	return (ret);
 }
 
-void	eating_time(t_philo *philo)
+void	eating_time(t_config *config)
 {
 	long long	start;
 	long long	end;
@@ -31,16 +31,14 @@ void	eating_time(t_philo *philo)
 	end = 0;
 	while (1)
 	{
-		if (philo->config->died)
-			return ;
 		end = get_time();
-		if ((end - start) >= philo->config->time.eat)
+		if ((end - start) >= config->time.eat)
 			break ;
 		usleep(10);
 	}
 }
 
-void	sleeping_time(t_philo *philo)
+void	sleeping_time(t_config *config)
 {
 	long long	start;
 	long long	end;
@@ -49,10 +47,23 @@ void	sleeping_time(t_philo *philo)
 	end = 0;
 	while (1)
 	{
-		if (philo->config->died)
-			return ;
 		end = get_time();
-		if ((end - start) >= philo->config->time.sleep)
+		if ((end - start) >= config->time.sleep)
+			break ;
+		usleep(10);
+	}
+}
+
+void	timer(long long start, long long end)
+{
+	long long	now;
+
+	if (!start)
+		start = get_time();
+	while (TRUE)
+	{
+		now = get_time();
+		if (now - start >= end)
 			break ;
 		usleep(10);
 	}

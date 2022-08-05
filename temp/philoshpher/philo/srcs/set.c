@@ -6,7 +6,7 @@
 /*   By: jaekpark <jaekpark@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 19:08:43 by jaekpark          #+#    #+#             */
-/*   Updated: 2022/03/25 02:43:20 by jaekpark         ###   ########.fr       */
+/*   Updated: 2022/08/05 04:35:11 by jaekpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,13 @@ t_config	*set_config(int argc, char **argv)
 	return (config);
 }
 
-t_philo	*set_philo(t_config *config)
+int	set_philo(t_config *config)
 {
 	int		i;
-	t_philo	*philos;
 
 	if (!config)
-		return (NULL);
-	i = -1;
-	philos = malloc(sizeof(t_philo) * (config->philo_cnt));
-	init_philo(philos, config);
-	return (philos);
+		return (FALSE);
+	config->philo = malloc(sizeof(t_philo) * (config->philo_cnt));
+	init_philo(config);
+	return (TRUE);
 }

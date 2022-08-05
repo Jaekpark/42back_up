@@ -6,11 +6,11 @@
 /*   By: jaekpark <jaekpark@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 20:02:21 by jaekpark          #+#    #+#             */
-/*   Updated: 2022/03/25 02:47:34 by jaekpark         ###   ########.fr       */
+/*   Updated: 2022/08/05 09:28:03 by jaekpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 int	ft_strlen(char *str)
 {
