@@ -1001,7 +1001,8 @@ void set_test() {
   print_namespace(STD_TYPE);
   std::set<int> std_copy(b);
   std_copy.clear();
-  for (std::set<int>::iterator beg = std_copy.begin(); beg != std_copy.end(); ++beg)
+  for (std::set<int>::iterator beg = std_copy.begin(); beg != std_copy.end();
+       ++beg)
     std::cout << *beg << " ";
   std::cout << std::endl;
   print_type("empty");
@@ -1014,7 +1015,8 @@ void set_test() {
   std::cout << std::endl;
   std_copy.swap(b);
   print_type("STD");
-  for (std::set<int>::iterator beg = std_copy.begin(); beg != std_copy.end(); ++beg)
+  for (std::set<int>::iterator beg = std_copy.begin(); beg != std_copy.end();
+       ++beg)
     std::cout << *beg << " ";
   std::cout << std::endl;
   print_divider();
@@ -1044,6 +1046,32 @@ void set_test() {
   std::cout << (b <= std_copy) << std::endl;
   print_type("b >= std_copy");
   std::cout << (b >= std_copy) << std::endl;
+  print_test_name("10000 elements insert time test");
+  int cnt1 = 1000;
+  time_t start, end;
+  start = clock();
+  while (--cnt1) {
+    srand(clock());
+    int val1 = rand() % 10000;
+    a.insert(val1);
+  }
+  end = clock();
+  print_type("ft");
+  std::cout << end - start << " ms" << std::endl;
+  print_type("size");
+  std::cout << a.size() << std::endl;
+  int cnt2 = 1000;
+  start = clock();
+  while (--cnt2) {
+    srand(clock());
+    int val2 = rand() % 10000;
+    b.insert(val2);
+  }
+  end = clock();
+  print_type("std");
+  std::cout << end - start << " ms" << std::endl;
+  print_type("size");
+  std::cout << b.size() << std::endl;
   print_divider();
 }
 
