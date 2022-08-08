@@ -38,6 +38,54 @@
 #define NAMESPACE ft
 #endif
 
+// template <class T1, class T2, class Node, class Bst>
+// void print_pair(Bst* bst, Node* node, ft::pair<T1, T2> pr) {
+//   int bst_index = 0;
+//   std::cout << "[" << ++bst_index << "] key : " << pr.first << "  |  ";
+//   std::cout << "val : " << pr.second;
+//   if (node->get_parent_node())
+//     std::cout << "  | [parent key] : "
+//               << node->get_parent_node()->get_value_ref().first;
+//   else
+//     std::cout << "  | [has no parent]";
+//   if (node->get_left_node())
+//     std::cout << "  | [left child key] : "
+//               << node->get_left_node()->get_value_ref().first;
+//   else
+//     std::cout << "  | [no left child]";
+//   if (node->get_right_node())
+//     std::cout << "  | [right child key] : "
+//               << node->get_right_node()->get_value_ref().first;
+//   else
+//     std::cout << "  | [no right child]";
+//   if (node == bst->get_root()) std::cout << "  <- this is root node.";
+//   std::cout << std::endl;
+// }
+
+// template <class Node>
+// void print2DUtil(Node* root, int space) {
+//   if (root == NULL) return;
+
+//   space += 10;
+
+//   print2DUtil(root->get_right_node(), space);
+
+//   std::cout << std::endl;
+//   for (int i = 10; i < space; i++) {
+//     std::cout << " ";
+//   }
+
+//   std::cout << root->get_value_ref().first << std::endl;
+
+//   print2DUtil(root->get_left_node(), space);
+// }
+
+// template <class Node>
+// void print2D(Node* root) {
+//   int num = 0;
+//   print2DUtil(root, num);
+// }
+
 void print_header(std::string title, size_t line_len = LINE_LENGTH,
                   char divider = '-') {
   size_t len = title.length();
@@ -891,159 +939,20 @@ void stack_test() {
 void set_test() {
   print_header("SET");
   ft::set<int> a;
-  ft::set<int> aa;
-
-  aa.insert(1000);
-  aa.insert(2000);
-  ft::set<int>::iterator a_iter = a.begin();
-
   std::set<int> b;
-  std::set<int> bb;
-  bb.insert(1000);
-  bb.insert(2000);
-  std::set<int>::iterator b_iter = b.begin();
 
-  int cnt = 20;
+  ft::set<int>::iterator a_iter = a.begin();
+  std::set<int>::iterator b_iter = b.begin();
+  std::cout << *a_iter << std::endl;
+  std::cout << *b_iter << std::endl;
+
+  int cnt = 10;
   while (--cnt) {
     srand(clock());
     int val = rand() % 1000;
     a.insert(val);
     b.insert(val);
   }
-
-  a_iter = a.begin();
-  b_iter = b.begin();
-  print_test_name("set insert test");
-  print_namespace(FT_TYPE);
-  while (a_iter != a.end()) {
-    std::cout << *(a_iter++) << " ";
-  }
-  std::cout << std::endl;
-  print_namespace(STD_TYPE);
-  while (b_iter != b.end()) {
-    std::cout << *(b_iter++) << " ";
-  }
-  std::cout << std::endl;
-
-  a.insert(a.begin(), 1);
-  b.insert(b.begin(), 1);
-  a.insert(aa.begin(), aa.end());
-  b.insert(bb.begin(), bb.end());
-  print_namespace(FT_TYPE);
-  for (ft::set<int>::iterator beg = a.begin(); beg != a.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_namespace(STD_TYPE);
-  for (std::set<int>::iterator beg = b.begin(); beg != b.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_test_name("set erase test");
-  a.erase(a.begin());
-  b.erase(b.begin());
-  a.erase(1000);
-  b.erase(1000);
-  a.erase(a.begin(), ++a.begin());
-  b.erase(b.begin(), ++b.begin());
-  print_namespace(FT_TYPE);
-  for (ft::set<int>::iterator beg = a.begin(); beg != a.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_type("count");
-  std::cout << a.count(2000) << std::endl;
-  print_type("size");
-  std::cout << a.size() << std::endl;
-  print_type("max_size");
-  std::cout << a.max_size() << std::endl;
-  print_type("lower bound");
-  std::cout << *a.lower_bound(*(++a.begin())) << std::endl;
-  print_type("upper bound");
-  std::cout << *a.upper_bound(*(++a.begin())) << std::endl;
-  print_type("find");
-  std::cout << *a.find(2000) << std::endl;
-  print_type("empty");
-  std::cout << a.empty() << std::endl;
-  print_namespace(STD_TYPE);
-  for (std::set<int>::iterator beg = b.begin(); beg != b.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_type("count");
-  std::cout << b.count(2000) << std::endl;
-  print_type("size");
-  std::cout << b.size() << std::endl;
-  print_type("max_size");
-  std::cout << b.max_size() << std::endl;
-  print_type("lower bound");
-  std::cout << *b.lower_bound(*(++b.begin())) << std::endl;
-  print_type("upper bound");
-  std::cout << *b.upper_bound(*(++b.begin())) << std::endl;
-  print_type("find");
-  std::cout << *b.find(2000) << std::endl;
-  print_type("empty");
-  std::cout << b.empty() << std::endl;
-  print_test_name("reverese iterator");
-  print_namespace(FT_TYPE);
-  for (ft::set<int>::reverse_iterator beg = a.rbegin(); beg != a.rend(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_namespace(STD_TYPE);
-  for (std::set<int>::reverse_iterator beg = b.rbegin(); beg != b.rend(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_test_name("copy & clear");
-  ft::set<int> copy(a);
-  copy.clear();
-  print_namespace(FT_TYPE);
-  for (ft::set<int>::iterator beg = copy.begin(); beg != copy.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_type("empty");
-  std::cout << copy.empty() << std::endl;
-  print_namespace(STD_TYPE);
-  std::set<int> std_copy(b);
-  std_copy.clear();
-  for (std::set<int>::iterator beg = std_copy.begin(); beg != std_copy.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_type("empty");
-  std::cout << std_copy.empty() << std::endl;
-  print_test_name("swap_test");
-  copy.swap(a);
-  print_type("FT");
-  for (ft::set<int>::iterator beg = copy.begin(); beg != copy.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  std_copy.swap(b);
-  print_type("STD");
-  for (std::set<int>::iterator beg = std_copy.begin(); beg != std_copy.end(); ++beg)
-    std::cout << *beg << " ";
-  std::cout << std::endl;
-  print_divider();
-
-  print_type("a == copy");
-  std::cout << (a == copy) << std::endl;
-  print_type("a != copy");
-  std::cout << (a != copy) << std::endl;
-  print_type("a < copy");
-  std::cout << (a < copy) << std::endl;
-  print_type("a > copy");
-  std::cout << (a > copy) << std::endl;
-  print_type("a <= copy");
-  std::cout << (a <= copy) << std::endl;
-  print_type("a >= copy");
-  std::cout << (a >= copy) << std::endl;
-  print_divider();
-  print_type("b == std_copy");
-  std::cout << (b == std_copy) << std::endl;
-  print_type("b != std_copy");
-  std::cout << (b != std_copy) << std::endl;
-  print_type("b < std_copy");
-  std::cout << (b < std_copy) << std::endl;
-  print_type("b > std_copy");
-  std::cout << (b > std_copy) << std::endl;
-  print_type("b <= std_copy");
-  std::cout << (b <= std_copy) << std::endl;
-  print_type("b >= std_copy");
-  std::cout << (b >= std_copy) << std::endl;
   print_divider();
 }
 

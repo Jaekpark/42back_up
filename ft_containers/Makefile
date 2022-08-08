@@ -1,6 +1,7 @@
 INCS				=	algorithm/equal.hpp algorithm/lexicographical_compare.hpp container/map.hpp container/stack.hpp container/vector.hpp \
 						iterator/advance.hpp iterator/bst_const_iterator.hpp iterator/bst_iterator.hpp iterator/distance.hpp iterator/iterator_traits.hpp \
-						iterator/iterator.hpp iterator/reverse_iterator.hpp \
+						iterator/iterator.hpp iterator/reverse_iterator.hpp iterator/tree_iterator.hpp iterator/tree_const_iterator.hpp \
+						utility/rb_node.hpp utility/rb_tree.hpp container/set.hpp \
 						type_traits/enable_if.hpp type_traits/is_integral.hpp type_traits/remove_const.hpp utility/binary_search_tree.hpp utility/bst_node.hpp \
 						utility/make_pair.hpp utility/nullptr_t utility/pair.hpp utility/utility.hpp
 
